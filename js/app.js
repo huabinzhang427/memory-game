@@ -78,6 +78,25 @@ function successFunction() {
 	
 }
 
+/*
+* 星级评分
+* 总移动数小于等于10次为三颗星
+* 总移动数大于10次、小于等于14次为两颗星
+* 总移动数大于14次为一颗星
+*/
+let stars = document.getElementsByClassName('stars')[0].children;
+
+function starRatingFunction() {
+	if (movesCount <= 10) {
+		// no set
+	} else if (movesCount <= 14) {
+		stars[stars.length-1].classList.replace('fa-star', 'fa-star-o');
+	} else {
+		stars[stars.length-1].classList.replace('fa-star', 'fa-star-o');
+		stars[stars.length-2].classList.replace('fa-star', 'fa-star-o');
+	}
+}
+
 for (let i = 0; i < cards.length; i++) {
 	cards[i].addEventListener('click', function() {
 		// 显示卡片的符号
@@ -97,7 +116,10 @@ for (let i = 0; i < cards.length; i++) {
 					// 将卡片从数组中移除并隐藏卡片的符号
 					notMatchCardFunction();
 				}
+				starRatingFunction();
 			}
 		}
 	});
 }
+
+
