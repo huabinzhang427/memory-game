@@ -54,7 +54,7 @@ function matchCardFunction() {
 	open[open.length-1].classList.add('match');
 	open[open.length-2].classList.add('match');
 	addMovesCountFunction();
-	if (open.length == 2) {
+	if (open.length == 16) {
 		successFunction();
 	}
 }
@@ -72,6 +72,7 @@ function addMovesCountFunction() {
 }
 
 function successFunction() {
+	clearTimeout(timeObject);
 	// 移除页面内容
 
 	// 添加页面内容
@@ -141,9 +142,11 @@ restart.addEventListener('click', function() {
 	const span = document.querySelector('#moves');
 	movesCount = 0;
 	span.textContent = movesCount;
-
 	// 随机洗牌
 	setCardShuffleFunction();
+	// 计时器重置
+	clearTimeFunction();
+	timedCount();
 });
 
 /* Memory Game 逻辑
@@ -172,3 +175,22 @@ function setCardShuffleFunction() {
 	}
 }
 
+/* 计时器
+* 当玩家开始玩游戏时，计时器也应该开始计时。玩家赢得游戏后，计时器停止计时。
+*
+*/
+let nowTime = 0;
+let timeObject;
+let spanTime = document.getElementById('time');
+timedCount();
+function timedCount() {
+	spanTime.textContent = nowTime;
+	nowTime += 1;
+	timeObject = setTimeout('timedCount()', 1000);
+}
+
+function clearTimeFunction() {
+	nowTime = 0;
+	spanTime.textContent = nowTime;
+	clearTimeout(timeObject);
+}
