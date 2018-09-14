@@ -123,3 +123,52 @@ for (let i = 0; i < cards.length; i++) {
 }
 
 
+let restart = document.getElementsByClassName('restart')[0];
+
+restart.addEventListener('click', function() {
+	// 重启按钮使玩家能够重置游戏板、计时器和星级评分
+	// 卡片状态重置
+	for(let i = 0; i < cards.length; i++) {
+		cards[i].classList.remove('show', 'open', 'match');
+	}
+	// 存储打开状态的数组 open 重置
+	open.length = 0;
+	// 星级评分重置
+	for (let i = 0; i < stars.length; i++) {
+		stars[i].classList.replace('fa-star-o', 'fa-star');
+	}
+	// 总移动次数重置
+	const span = document.querySelector('#moves');
+	movesCount = 0;
+	span.textContent = movesCount;
+
+	// 随机洗牌
+	setCardShuffleFunction();
+});
+
+/* Memory Game 逻辑
+* 该游戏会随机洗牌。所有牌都匹配后，用户就获胜了。
+* 主要是将类属性数组打乱重新分配给 card 
+*/
+let farTypes = ['fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-bolt', 'fa fa-cube', 
+'fa fa-anchor', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-diamond', 'fa fa-bomb', 'fa fa-leaf', 'fa fa-bomb', 
+'fa fa-bolt', 'fa fa-bicycle', 'fa fa-paper-plane-o', 'fa fa-cube'];
+
+setCardShuffleFunction();
+
+function setCardShuffleFunction() {
+	// 使用下面提供的 "shuffle" 方法对数组中的卡片进行洗牌
+	farTypes = shuffle(farTypes);
+	// 循环遍历每张卡片
+	for (let i = 0; i < cards.length; i++) {
+		if (cards[i].children.length != 0) {
+			// 先移除子元素
+			cards[i].removeChild(cards[i].firstElementChild);
+		}
+		// 创建其 HTML
+		let htmlCard = '<i class="' + farTypes[i] + '"></i>';
+		// 将每张卡的 HTML 添加到页面
+		cards[i].insertAdjacentHTML('afterbegin', htmlCard);;
+	}
+}
+
