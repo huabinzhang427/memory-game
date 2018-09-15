@@ -4,6 +4,10 @@
 	<meta charset="utf-8">
 	<meta lang="zh">
 	<title>记忆游戏</title>
+	<!-- 适配不同屏幕设备 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- 添加动效，动画库 -->
+	<link rel="stylesheet" href="css/animate.min.css">
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<!-- Font -->
@@ -109,10 +113,14 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="success">
+	<!-- 弹出“恭喜”窗口 -->
+	<div id="success">
+		<center>
+			<h1>恭喜! 您赢了!</h1>
+		总共移动 <span>12</span> 次，获得 <span>1</span> 颗星
+		<button class="btn btn-success show">再玩一次！</button>
+		</center>
 		
-
 	</div>
 	<script src="js/app.js"></script>
 </body>

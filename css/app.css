@@ -70,8 +70,17 @@ body {
     font-size: 33px;
 }
 
-.success {
+#success {
 	height: 100%;
 	width: 100%;
-	background: #000000;
+	position: fixed;
+	display: none;
+	left: 0;
+	top: 0;
+	z-index: 100;
+	background: #ffffff;
 }
+
+
+/*在移动设备的情况下，所有卡片都挤在一列里面*/
+/*媒体查询？*/

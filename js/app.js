@@ -42,7 +42,7 @@ let open = [];
 let movesCount = 0;
 
 function openCardFunction(card) {
-	card.classList.add('show', 'open');
+	card.classList.add('show', 'open','animated', 'flipInY');
 }
 
 function addOpenArrayFunction(card) {
@@ -51,8 +51,11 @@ function addOpenArrayFunction(card) {
 
 
 function matchCardFunction() {
-	open[open.length-1].classList.add('match');
-	open[open.length-2].classList.add('match');
+	open[open.length-1].classList.remove('flipInY');
+	open[open.length-1].classList.add('match', 'rubberBand', 'delay-500ms');
+	open[open.length-2].classList.remove('flipInY');
+	open[open.length-2].classList.add('match', 'rubberBand', 'delay-500ms');
+
 	addMovesCountFunction();
 	if (open.length == 16) {
 		successFunction();
@@ -60,8 +63,8 @@ function matchCardFunction() {
 }
 
 function notMatchCardFunction() {
-	open.pop().classList.remove('show', 'open');
-	open.pop().classList.remove('show', 'open');
+	open.pop().classList.remove('show', 'open', 'animated', 'flipInY');
+	open.pop().classList.remove('show', 'open', 'animated', 'flipInY');
 	addMovesCountFunction();
 }
 
@@ -130,7 +133,7 @@ restart.addEventListener('click', function() {
 	// 重启按钮使玩家能够重置游戏板、计时器和星级评分
 	// 卡片状态重置
 	for(let i = 0; i < cards.length; i++) {
-		cards[i].classList.remove('show', 'open', 'match');
+		cards[i].classList.remove('show', 'open', 'match','animated', 'flipInY', 'rubberBand');
 	}
 	// 存储打开状态的数组 open 重置
 	open.length = 0;
@@ -147,6 +150,7 @@ restart.addEventListener('click', function() {
 	// 计时器重置
 	clearTimeFunction();
 	timedCount();
+	showSuccessWindowFunction();
 });
 
 /* Memory Game 逻辑
@@ -194,3 +198,16 @@ function clearTimeFunction() {
 	spanTime.textContent = nowTime;
 	clearTimeout(timeObject);
 }
+
+
+/* 弹出“恭喜”消息
+* 当用户赢得游戏时，系统会弹出一个模式窗口，恭喜玩家获胜了，并询问是否再玩一次。
+* 还应该告诉用户赢得游戏花费了多长时间，星级评分是多少。
+*
+*/
+// const popWindow = document.getElementById('success');
+// showSuccessWindowFunction();
+// function showSuccessWindowFunction() {
+// 	popWindow.style.display = 'block';
+// }
+
