@@ -57,7 +57,7 @@ function matchCardFunction() {
 	open[open.length-2].classList.add('match', 'rubberBand', 'delay-500ms');
 
 	addMovesCountFunction();
-	if (open.length == 16) {
+	if (open.length === 16) {
 		successFunction();
 	}
 }
@@ -76,24 +76,21 @@ function addMovesCountFunction() {
 
 function successFunction() {
 	clearTimeout(timeObject);
-	// 移除页面内容
-
-	// 添加页面内容
-	
+	showDialog();
 }
 
 /*
 * 星级评分
-* 总移动数小于等于10次为三颗星
-* 总移动数大于10次、小于等于14次为两颗星
-* 总移动数大于14次为一颗星
+* 总移动数小于等于12次为三颗星
+* 总移动数大于12次、小于等于16次为两颗星
+* 总移动数大于16次为一颗星
 */
 let stars = document.getElementsByClassName('stars')[0].children;
 
 function starRatingFunction() {
-	if (movesCount <= 10) {
+	if (movesCount <= 12) {
 		// no set
-	} else if (movesCount <= 14) {
+	} else if (movesCount <= 16) {
 		stars[stars.length-1].classList.replace('fa-star', 'fa-star-o');
 	} else {
 		stars[stars.length-1].classList.replace('fa-star', 'fa-star-o');
@@ -101,9 +98,16 @@ function starRatingFunction() {
 	}
 }
 
+let clickCount = 0;
 for (let i = 0; i < cards.length; i++) {
 	cards[i].addEventListener('click', function() {
-		// 显示卡片的符号
+		
+		clickCount ++;
+		console.log(`clickCount=${clickCount}`);
+		if (clickCount === 1) {
+			// 玩家翻开第一张卡片之后才开始计时
+			timedCount();
+		}
 		if (!cards[i].classList.contains('show')) {
 			// 显示卡片的符号
 			openCardFunction(cards[i]);
@@ -111,15 +115,17 @@ for (let i = 0; i < cards.length; i++) {
 			addOpenArrayFunction(cards[i]);
 			// 如果数组中已有另一张卡，请检查两张卡片是否匹配
 			if (open.length % 2 == 0) {
-				let last1 = open[open.length-1].firstElementChild.classList;
-				let last2 = open[open.length-2].firstElementChild.classList;
-				if ( last1.toString() == last2.toString()) {
-					// 将卡片锁定为 "match" 状态
-					matchCardFunction();
-				} else {
-					// 将卡片从数组中移除并隐藏卡片的符号
-					notMatchCardFunction();
-				}
+				setTimeout(() => {
+					let last1 = open[open.length-1].firstElementChild.classList;
+					let last2 = open[open.length-2].firstElementChild.classList;
+					if ( last1.toString() == last2.toString()) {
+						// 将卡片锁定为 "match" 状态
+						matchCardFunction();
+					} else {
+						// 将卡片从数组中移除并隐藏卡片的符号
+						notMatchCardFunction();
+					}
+					}, 800);
 				starRatingFunction();
 			}
 		}
@@ -130,6 +136,10 @@ for (let i = 0; i < cards.length; i++) {
 let restart = document.getElementsByClassName('restart')[0];
 
 restart.addEventListener('click', function() {
+	resetFunction();
+});
+
+function resetFunction() {
 	// 重启按钮使玩家能够重置游戏板、计时器和星级评分
 	// 卡片状态重置
 	for(let i = 0; i < cards.length; i++) {
@@ -149,9 +159,9 @@ restart.addEventListener('click', function() {
 	setCardShuffleFunction();
 	// 计时器重置
 	clearTimeFunction();
-	timedCount();
-	showSuccessWindowFunction();
-});
+	clearStars();
+	clickCount = 0;
+}
 
 /* Memory Game 逻辑
 * 该游戏会随机洗牌。所有牌都匹配后，用户就获胜了。
@@ -173,7 +183,7 @@ function setCardShuffleFunction() {
 			cards[i].removeChild(cards[i].firstElementChild);
 		}
 		// 创建其 HTML
-		let htmlCard = '<i class="' + farTypes[i] + '"></i>';
+		let htmlCard = `<i class="${farTypes[i]}"></i>`;
 		// 将每张卡的 HTML 添加到页面
 		cards[i].insertAdjacentHTML('afterbegin', htmlCard);;
 	}
@@ -186,7 +196,6 @@ function setCardShuffleFunction() {
 let nowTime = 0;
 let timeObject;
 let spanTime = document.getElementById('time');
-timedCount();
 function timedCount() {
 	spanTime.textContent = nowTime;
 	nowTime += 1;
@@ -204,10 +213,46 @@ function clearTimeFunction() {
 * 当用户赢得游戏时，系统会弹出一个模式窗口，恭喜玩家获胜了，并询问是否再玩一次。
 * 还应该告诉用户赢得游戏花费了多长时间，星级评分是多少。
 *
-*/
-// const popWindow = document.getElementById('success');
-// showSuccessWindowFunction();
-// function showSuccessWindowFunction() {
-// 	popWindow.style.display = 'block';
-// }
+*/ 
+
+function showDialog() {
+	$('#myModal').modal('show')
+	const endTimes = document.getElementsByClassName('end-times')[0];
+	endTimes.textContent = spanTime.textContent;
+  	const endMoves = document.getElementsByClassName('end-moves')[0];
+	endMoves.textContent = movesCount;
+	
+	const endStars = document.getElementsByClassName('end-stars')[0];
+	if (movesCount <= 12) {
+		setStars(endStars, 3);
+	} else if (movesCount <= 16) {
+		setStars(endStars, 2);
+	} else {
+		setStars(endStars, 1);
+	}
+}
+
+function setStars(star, num) {
+	const starHtml = '<i class="fa fa-star"></i>';
+	for(let i = 0; i < num; i++) {
+		star.insertAdjacentHTML('beforeend', starHtml);
+	}
+}
+
+function clearStars() {
+	const endStars = document.getElementsByClassName('end-stars')[0];
+	const childStars = endStars.children;
+	for (const star of childStars) {
+		if (star.classList.contains('fa')) {
+			endStars.removeChild(star);
+		}
+	}
+}
+
+const replay = document.getElementsByClassName('replay')[0];
+replay.addEventListener('click', function() {
+	console.log('replay');
+	$('#myModal').modal('hide')
+	resetFunction();
+});
 

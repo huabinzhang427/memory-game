@@ -81,6 +81,9 @@ body {
 	background: #ffffff;
 }
 
+.dialog-body {
+	font-size: 1.5rem;
+}
 
 /*在移动设备的情况下，所有卡片都挤在一列里面*/
 /*媒体查询？*/
