@@ -11,34 +11,36 @@ body {
 * Styles for the Score Panel
 */
 
-.my-container {
-	text-align: center;
-	border: none;
-}
-
 .score-panel {
+	text-align: center;
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+
+.child-div {
+	display: inline-block;
+	margin: 10px;
 }
 
 .restart {
 	cursor: pointer;
 }
 
-
 /*
 * Styles for the deck for cards
 */
 .deck {
-	background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-	padding: 32px;
-	border-radius: 10px;
-	justify-content: space-between;
-	box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
-}
-
-.row-line {
-	height: 30px;
+	width: 660px;
+    min-height: 680px;
+    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .card {
@@ -49,10 +51,45 @@ body {
     color: #ffffff;
     border-radius: 8px;
     cursor: pointer;
-    border: 0px;
+    display: flex;
     justify-content: center;
+    align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
+
+/* 添加一个媒体查询适配比平板设备更小的设备 Nexus 5X */
+ @media screen and (max-width: 767px) {
+     /* 适当减小 .deck 和 .card 以及字体的尺寸 */
+     .deck {
+         width: 390px;
+         min-height: 400px;
+         padding: 20px;
+     }
+     .deck .card {
+         height: 80px;
+         width: 80px;
+     }
+     .deck .match,
+     .deck .show {
+         font-size: 24px;
+     }
+ }
+
+ @media screen and (max-width: 400px) {
+ 	.deck {
+         width: 360px;
+         min-height: 400px;
+         padding: 20px;
+     }
+     .deck .card {
+         height: 70px;
+         width: 70px;
+     }
+     .deck .match,
+     .deck .show {
+         font-size: 24px;
+     }
+ }
 
 .open {
 	transform: rotateY(0);
@@ -84,6 +121,3 @@ body {
 .dialog-body {
 	font-size: 1.5rem;
 }
-
-/*在移动设备的情况下，所有卡片都挤在一列里面*/
-/*媒体查询？*/

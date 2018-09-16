@@ -118,7 +118,7 @@ for (let i = 0; i < cards.length; i++) {
 				setTimeout(() => {
 					let last1 = open[open.length-1].firstElementChild.classList;
 					let last2 = open[open.length-2].firstElementChild.classList;
-					if ( last1.toString() == last2.toString()) {
+					if ( last1.toString() === last2.toString()) {
 						// 将卡片锁定为 "match" 状态
 						matchCardFunction();
 					} else {
