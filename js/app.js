@@ -103,12 +103,11 @@ for (let i = 0; i < cards.length; i++) {
 	cards[i].addEventListener('click', function() {
 		
 		clickCount ++;
-		console.log(`clickCount=${clickCount}`);
 		if (clickCount === 1) {
 			// 玩家翻开第一张卡片之后才开始计时
 			timedCount();
 		}
-		if (!cards[i].classList.contains('show')) {
+		if (!cards[i].classList.contains('show') && !isMoreShowFunction()) {
 			// 显示卡片的符号
 			openCardFunction(cards[i]);
 			// 将卡片添加到状态为 “open” 的 *数组* 中
@@ -130,6 +129,25 @@ for (let i = 0; i < cards.length; i++) {
 			}
 		}
 	});
+}
+
+/*  防止快速连续点击 三张卡片
+*  卡片列表中超过2张卡片处于 'show open' 就不执行点击操作
+*
+*/
+function isMoreShowFunction() {
+	let showNun = 0;
+	for (let i = 0; i < cards.length; i++) {
+		if (cards[i].classList.length === 5) { // card show open animated flipInY
+			showNun++;
+		}
+	}
+	console.log(`showNun=${showNun}`);
+	if (showNun == 2) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 
